@@ -2626,11 +2626,10 @@
     }
 
     function getMinScale() {
-    const scaleX = container.clientWidth / svgWidth;
-    const scaleY = container.clientHeight / svgHeight;
-    return Math.max(scaleX, scaleY); // ограничиваем по наибольшей оси
-  }
-
+      const scaleX = container.clientWidth / svgWidth;
+      const scaleY = container.clientHeight / svgHeight;
+      return Math.max(scaleX, scaleY);
+    }
     function setTransition(enabled) {
       inner.style.transition = enabled ? "transform 0.2s ease-out" : "none";
     }
@@ -2654,18 +2653,27 @@
       inner.style.transform = `translate(${translate.x}px, ${translate.y}px) scale(${scale})`;
     }
 
-    function centerInitialView() {
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
+function centerInitialView() {
+  const containerWidth = container.clientWidth;
+  const containerHeight = container.clientHeight;
 
-      const scaledWidth = svgWidth * scale;
-      const scaledHeight = svgHeight * scale;
+  // Масштаб так, чтобы SVG заполнило экран полностью (возможно, с обрезкой)
+  scale = Math.max(
+    containerWidth / svgWidth,
+    containerHeight / svgHeight
+  );
 
-      translate.x = (containerWidth - scaledWidth) / 2;
-      translate.y = (containerHeight - scaledHeight) / 2;
+  const scaledWidth = svgWidth * scale;
+  const scaledHeight = svgHeight * scale;
 
-      updateTransform();
-    }
+  // Центрируем изображение (обрезается равномерно)
+  translate.x = (containerWidth - scaledWidth) / 2;
+  translate.y = (containerHeight - scaledHeight) / 2;
+
+  updateTransform();
+}
+
+
 
     // ---------- Мышь ----------
     svg.addEventListener("mousedown", (e) => {
