@@ -2,13 +2,13 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>SVG: Масштаб и перетаскивание (тач + мышь)</title>
+  <title>SVG: Мышь — плавно, тач — мгновенно</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       overflow: hidden;
-      touch-action: none; /* Отключаем жесты браузера */
+      touch-action: none;
     }
 
     #container {
@@ -26,16 +26,15 @@
     }
 
     #inner {
-      transition: transform 0.2s ease-out;
       transform-origin: 0 0;
     }
   </style>
 </head>
 <body>
   <div id="container">
-    <svg  id="svg" width="3781" height="2339" viewBox="0 0 3781 2339" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="inner">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M1077.92 884.841L1114.92 874.742C1119.12 875.185 1128.99 867.2 1135.84 882.344C1172.09 962.364 1239.45 1177.76 1170.59 1163.09L1077.92 884.841Z" fill="#FFED00"/>
+    <svg id="svg" viewBox="0 0 800 600" width="800" height="600">
+      <g id="inner">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M1077.92 884.841L1114.92 874.742C1119.12 875.185 1128.99 867.2 1135.84 882.344C1172.09 962.364 1239.45 1177.76 1170.59 1163.09L1077.92 884.841Z" fill="#FFED00"/>
 <path d="M2981.66 0.050293C2429.67 59.9403 2151.23 75.5395 1596.73 75.5396C1424.99 82.3948 1433.28 206.416 1369.17 191.683L1211.76 586.84L1196.21 603.233L1281.8 593.49L1218.07 827.41C1213.42 844.83 1201.87 854.99 1184.44 858.99L1085.91 882.342C1097.53 948.318 1116.56 1014.98 1161.5 1057C1178.8 1111.69 1220.5 1194 1170 1212C1170 1212 1140.78 1142.78 1125.5 1108.5C1093 1048.5 1093.5 1061 1070 1020.5C1046.5 980 1014 805.5 1030.5 741C1047 676.5 1171.89 564.7 1171.89 564.7L1325.38 178.24C1276.94 155.97 1165.41 64.6383 1083.34 61.1802L0 0.050293H2981.66Z" fill="url(#paint0_linear_104_59417)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1184 1174C1186.97 1211.11 1266 1276.5 1280 1387.5C1293.08 1458.27 1270.17 1526.5 1246.5 1597.5C1230.25 1646.24 1352.52 1686.27 1350.39 1732.24C1346.7 1812.16 1455.43 1905.21 1549.5 1980.63C1552.79 1983.28 1631.24 2043.9 1634.5 2046.5C1600.22 2043.5 1602 2055.5 1568 2043.5C1470.92 1956.97 1337.22 1870.58 1315.02 1770.15C1322.79 1709.23 1177.77 1666.84 1205.94 1605.2C1215.79 1583.64 1248.82 1463.8 1235 1387.5C1216.76 1286.74 1181.39 1247.71 1176.5 1204.5L1184 1174Z" fill="url(#paint1_linear_104_59417)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1161.54 1272.47C1152.02 1224.7 1153.87 1158.99 1194 1170.41C1200.07 1172.14 1219.38 1172.46 1226.17 1170.41C1256.9 1161.12 1293.01 1131.92 1320.96 1146.86C1331.04 1152.24 1387.64 1210.5 1370.27 1307.25C1369.59 1311.06 1352.79 1367.4 1344.5 1391.6C1337.9 1410.88 1356.34 1374.02 1347.24 1395.39L1320.01 1459.3C1316.5 1467.54 1294.01 1482.2 1289.25 1483.97C1243.41 1500.96 1215.54 1508.2 1165.68 1483.71C1132.52 1467.42 1143.42 1402.81 1166.28 1372.42C1193.07 1336.8 1154.05 1356.16 1168.24 1317.51C1169.87 1313.08 1161.74 1273.45 1161.54 1272.47Z" fill="url(#paint2_radial_104_59417)"/>
@@ -2603,9 +2602,8 @@
 </clipPath>
 <image id="image0_104_59417" width="210" height="69" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANIAAABFCAYAAAA/+ri5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3VpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDYuMC1jMDA2IDc5LjE2NDY0OCwgMjAyMS8wMS8xMi0xNTo1MjoyOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0iREI1MzgzNDA3NjU3QjNDRUVBOTk3QzhCNkNBODRDOEYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEMzMUUwQ0I3MUJCMTFFQjhDMEJENDAxNTM5MTBBRUQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEMzMUUwQ0E3MUJCMTFFQjhDMEJENDAxNTM5MTBBRUQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIyLjEgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MjllYTBlZjAtOWU5NS05MDRlLWFlYmQtOThlNThiMzc4ODBlIiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6MzJiNTZhMDAtNDBjNy04NjRmLWI0OTItNGFjMjg4NzI2ZDhhIi8+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"/>
 </defs>
-</g>
-</svg>
-
+      </g>
+    </svg>
   </div>
 
   <script>
@@ -2621,6 +2619,7 @@
     let translate = { x: 0, y: 0 };
     let isDragging = false;
     let start = { x: 0, y: 0 };
+    let isTouching = false;
 
     function clamp(val, min, max) {
       return Math.max(min, Math.min(max, val));
@@ -2628,6 +2627,10 @@
 
     function getMinScale() {
       return container.clientWidth / svgWidth;
+    }
+
+    function setTransition(enabled) {
+      inner.style.transition = enabled ? "transform 0.2s ease-out" : "none";
     }
 
     function updateTransform() {
@@ -2665,6 +2668,7 @@
     // ---------- Мышь ----------
     svg.addEventListener("mousedown", (e) => {
       isDragging = true;
+      setTransition(false);
       start = { x: e.clientX - translate.x, y: e.clientY - translate.y };
       svg.style.cursor = "grabbing";
     });
@@ -2685,6 +2689,7 @@
 
     svg.addEventListener("wheel", (e) => {
       e.preventDefault();
+      setTransition(true); // только для мыши
 
       const zoomSpeed = 0.0005;
       const oldScale = scale;
@@ -2706,18 +2711,19 @@
       updateTransform();
     });
 
-    // ---------- Тач-устройства ----------
+    // ---------- Тач ----------
     let lastTouchDist = null;
     let lastTouchMid = null;
 
     svg.addEventListener("touchstart", (e) => {
+      setTransition(false); // Отключаем анимацию для тача
+      isTouching = true;
+
       if (e.touches.length === 1) {
-        // Одиночный палец — перетаскивание
         isDragging = true;
         const touch = e.touches[0];
         start = { x: touch.clientX - translate.x, y: touch.clientY - translate.y };
       } else if (e.touches.length === 2) {
-        // Пинч
         lastTouchDist = getDistance(e.touches[0], e.touches[1]);
         lastTouchMid = getMidpoint(e.touches[0], e.touches[1]);
       }
@@ -2766,6 +2772,7 @@
       }
       if (e.touches.length === 0) {
         isDragging = false;
+        isTouching = false;
       }
     });
 
@@ -2782,7 +2789,7 @@
       };
     }
 
-    // ---------- Инициализация ----------
+    // ---------- Init ----------
     window.addEventListener("resize", centerInitialView);
     centerInitialView();
   </script>
