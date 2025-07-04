@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>SVG: Мышь — плавно, тач — мгновенно</title>
+  <title>Интерактивный SVG (мышь + тач)</title>
   <style>
     html, body {
       margin: 0;
@@ -27,12 +27,13 @@
 
     #inner {
       transform-origin: 0 0;
+      transition: none;
     }
   </style>
 </head>
 <body>
   <div id="container">
-    <svg id="svg" width="3769" height="2334" viewBox="0 0 3769 2334">
+    <svg id="svg"  width="3769" height="2334" viewBox="0 0 3769 2334">
       <g id="inner">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M1077.92 884.841L1114.92 874.742C1119.12 875.185 1128.99 867.2 1135.84 882.344C1172.09 962.364 1239.45 1177.76 1170.59 1163.09L1077.92 884.841Z" fill="#FFED00"/>
 <path d="M2981.66 0.050293C2429.67 59.9403 2151.23 75.5395 1596.73 75.5396C1424.99 82.3948 1433.28 206.416 1369.17 191.683L1211.76 586.84L1196.21 603.233L1281.8 593.49L1218.07 827.41C1213.42 844.83 1201.87 854.99 1184.44 858.99L1085.91 882.342C1097.53 948.318 1116.56 1014.98 1161.5 1057C1178.8 1111.69 1220.5 1194 1170 1212C1170 1212 1140.78 1142.78 1125.5 1108.5C1093 1048.5 1093.5 1061 1070 1020.5C1046.5 980 1014 805.5 1030.5 741C1047 676.5 1171.89 564.7 1171.89 564.7L1325.38 178.24C1276.94 155.97 1165.41 64.6383 1083.34 61.1802L0 0.050293H2981.66Z" fill="url(#paint0_linear_104_59417)"/>
@@ -2619,19 +2620,28 @@
     let translate = { x: 0, y: 0 };
     let isDragging = false;
     let start = { x: 0, y: 0 };
-    let isTouching = false;
+    let lastTouchDist = null;
+    let lastTouchMid = null;
 
     function clamp(val, min, max) {
       return Math.max(min, Math.min(max, val));
     }
 
     function getMinScale() {
-      const scaleX = container.clientWidth / svgWidth;
-      const scaleY = container.clientHeight / svgHeight;
-      return Math.max(scaleX, scaleY);
+      return Math.max(
+        container.clientWidth / svgWidth,
+        container.clientHeight / svgHeight
+      );
     }
-    function setTransition(enabled) {
-      inner.style.transition = enabled ? "transform 0.2s ease-out" : "none";
+
+    function setTransition(enabled, mode = 'mouse') {
+      if (!enabled) {
+        inner.style.transition = 'none';
+      } else if (mode === 'touch') {
+        inner.style.transition = 'transform 0.05s linear';
+      } else {
+        inner.style.transition = 'transform 0.2s ease-out';
+      }
     }
 
     function updateTransform() {
@@ -2653,29 +2663,26 @@
       inner.style.transform = `translate(${translate.x}px, ${translate.y}px) scale(${scale})`;
     }
 
-function centerInitialView() {
-  const containerWidth = container.clientWidth;
-  const containerHeight = container.clientHeight;
+    function centerInitialView() {
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
 
-  // Масштаб так, чтобы SVG заполнило экран полностью (возможно, с обрезкой)
-  scale = Math.max(
-    containerWidth / svgWidth,
-    containerHeight / svgHeight
-  );
+      // Масштабируем по большей оси — заполняем экран с возможной обрезкой
+      scale = Math.max(
+        containerWidth / svgWidth,
+        containerHeight / svgHeight
+      );
 
-  const scaledWidth = svgWidth * scale;
-  const scaledHeight = svgHeight * scale;
+      const scaledWidth = svgWidth * scale;
+      const scaledHeight = svgHeight * scale;
 
-  // Центрируем изображение (обрезается равномерно)
-  translate.x = (containerWidth - scaledWidth) / 2;
-  translate.y = (containerHeight - scaledHeight) / 2;
+      translate.x = (containerWidth - scaledWidth) / 2;
+      translate.y = (containerHeight - scaledHeight) / 2;
 
-  updateTransform();
-}
+      updateTransform();
+    }
 
-
-
-    // ---------- Мышь ----------
+    // 🖱 Мышь
     svg.addEventListener("mousedown", (e) => {
       isDragging = true;
       setTransition(false);
@@ -2699,14 +2706,13 @@ function centerInitialView() {
 
     svg.addEventListener("wheel", (e) => {
       e.preventDefault();
-      setTransition(true); // только для мыши
+      setTransition(true, 'mouse');
 
       const zoomSpeed = 0.0005;
       const oldScale = scale;
       scale += -e.deltaY * zoomSpeed;
 
-      const minScale = getMinScale();
-      scale = clamp(scale, minScale, 4);
+      scale = clamp(scale, getMinScale(), 4);
 
       const rect = svg.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
@@ -2721,13 +2727,9 @@ function centerInitialView() {
       updateTransform();
     });
 
-    // ---------- Тач ----------
-    let lastTouchDist = null;
-    let lastTouchMid = null;
-
+    // 📱 Тач
     svg.addEventListener("touchstart", (e) => {
-      setTransition(false); // Отключаем анимацию для тача
-      isTouching = true;
+      setTransition(true, 'touch');
 
       if (e.touches.length === 1) {
         isDragging = true;
@@ -2741,6 +2743,7 @@ function centerInitialView() {
 
     svg.addEventListener("touchmove", (e) => {
       e.preventDefault();
+      setTransition(true, 'touch');
 
       if (e.touches.length === 1 && isDragging) {
         const touch = e.touches[0];
@@ -2758,8 +2761,7 @@ function centerInitialView() {
           const scaleFactor = dist / lastTouchDist;
           scale *= scaleFactor;
 
-          const minScale = getMinScale();
-          scale = clamp(scale, minScale, 4);
+          scale = clamp(scale, getMinScale(), 4);
 
           const dx = mid.x - translate.x;
           const dy = mid.y - translate.y;
@@ -2782,14 +2784,13 @@ function centerInitialView() {
       }
       if (e.touches.length === 0) {
         isDragging = false;
-        isTouching = false;
       }
     });
 
     function getDistance(p1, p2) {
       const dx = p2.clientX - p1.clientX;
       const dy = p2.clientY - p1.clientY;
-      return Math.sqrt(dx * dx + dy * dy);
+      return Math.hypot(dx, dy);
     }
 
     function getMidpoint(p1, p2) {
@@ -2799,7 +2800,7 @@ function centerInitialView() {
       };
     }
 
-    // ---------- Init ----------
+    // 🚀 Инициализация
     window.addEventListener("resize", centerInitialView);
     centerInitialView();
   </script>
