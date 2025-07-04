@@ -2626,8 +2626,10 @@
     }
 
     function getMinScale() {
-      return container.clientWidth / svgWidth;
-    }
+    const scaleX = container.clientWidth / svgWidth;
+    const scaleY = container.clientHeight / svgHeight;
+    return Math.max(scaleX, scaleY); // ограничиваем по наибольшей оси
+  }
 
     function setTransition(enabled) {
       inner.style.transition = enabled ? "transform 0.2s ease-out" : "none";
